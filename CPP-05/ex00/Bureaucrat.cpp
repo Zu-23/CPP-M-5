@@ -75,7 +75,6 @@ void Bureaucrat::incrementGrade()
 		std::cerr << b.what() << std::endl;
 		return ;
 	}
-	
 	this->grade -= 1;
 }
 
@@ -93,6 +92,15 @@ void Bureaucrat::decrementGrade()
 		return ;
 	}
 	this->grade += 1;
+}
+
+const char *Bureaucrat::GradeTooHighException::what() const throw()
+{
+	return ("Grade too high");
+}
+const char *Bureaucrat::GradeTooLowException::what() const throw()
+{
+	return ("Grade too low");
 }
 /*
 ** --------------------------------- ACCESSOR ---------------------------------

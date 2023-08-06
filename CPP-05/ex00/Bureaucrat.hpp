@@ -27,19 +27,13 @@ std::string	getName() const;
 class Bureaucrat::GradeTooHighException : public std::exception
  {
 		public:
-			virtual const char* what() const throw () 
-			{
-				return ("Grade too high");
-			}
+			virtual const char* what() const throw ();
  };
 
 class Bureaucrat::GradeTooLowException : public std::exception
  {
 		public:
-			virtual const char* what() const throw()
-			{
-				return ("Grade too low");
-			}
+			virtual const char* what() const throw();
  };
 
 std::ostream &			operator<<( std::ostream & o, Bureaucrat const & i );
