@@ -5,14 +5,15 @@
 # include <string>
 #include "Bureaucrat.hpp"
 
+class Bureaucrat;
 class Form
 {
 
 	private:
 		const std::string name;
-		bool			  sign;
 		const	int		  gradeSign;
 		const	int		  gradeExe;
+		bool			  sign;
 	public:
 		Form();
 		Form(std::string name, int grSign, int grExe);

@@ -1,42 +1,25 @@
 #include "Form.hpp"
-
+#include"Bureaucrat.hpp"
 
 int main()
 {
-   {
-		Form f1;
-		Bureaucrat b2("b2", 150);
-
-
-		std::cout << f1 << std::endl;
-		std::cout << b2 << std::endl;
-		f1.beSigned(b2);
-		std::cout << f1 << std::endl;
+	{
+		Bureaucrat biro1("biro1", 10);
+		Form form1("form1", 40, 30);
+		std::cout << "biro1 before signing" << std::endl;
+		std::cout << biro1 << std::endl;
+		biro1.signForm(form1);
+		std::cout << "biro after signing" << std::endl; 
+		std::cout << biro1 << std::endl;
 	}
 	{
-		Bureaucrat b2("b2", 150);
-		Form f1(12, 15, "f1");
-
-
-		std::cout << f1 << std::endl;
-		std::cout << b2 << std::endl;
-
-		b2.signForm(f1);
+		Bureaucrat biro2("biro2", 100);
+		Form form2("form2", 40, 30);
+		std::cout << "biro2 before signing" << std::endl;
+		std::cout << biro2 << std::endl;
+		biro2.signForm(form2);
+		std::cout << "biro2 after signing" << std::endl; 
+		std::cout << biro2 << std::endl;
 	}
-	{
-		try
-		{;
-			Form f1(42, 42, "42Form");
-			Bureaucrat b2("b2", 150);
-
-			std::cout << f1 << std::endl;
-			std::cout << b2 << std::endl;
-			f1.beSigned(b2);
-
-		}
-		catch (Form::GradeTooLowException &e)
-		{
-			std::cerr << e.what() << std::endl;
-		}
-	}
+	
 }
