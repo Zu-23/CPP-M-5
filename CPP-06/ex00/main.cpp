@@ -1,4 +1,4 @@
-#include<ScalarConverter.hpp>
+#include "ScalarConverter.hpp"
 
 int main(int ac, char **av)
 {
@@ -8,7 +8,7 @@ int main(int ac, char **av)
 	{
 		if (ScalarConverter::convert(av[1]))
 		{
-            print("Enter a valid data type: Int - Char - Float - Double");
+            print("Enter a valid data type: Int - Char - Float - Double - +inf - -inf - nan - nanf\n");
 			return 0;
 		}
     }

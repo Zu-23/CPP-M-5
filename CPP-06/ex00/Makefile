@@ -1,24 +1,26 @@
-CFLAGS = -Wall -Werror -Wextra -std=c++98
-CC = c++
-SRCS = ScalarConverter.cpp main.cpp
-OBJS = $(SRC:.c=.o)
-RM = rm -rf
-NAME = convert
+NAME 	=  convert
 
-all: $(NAME)
+SRC		=	ScalarConverter.cpp main.cpp
+
+CC 		=	c++
+
+FLAGS	= -std=c++98 -Wall -Wextra -Werror 
+
+OBJS 	= $(SRC:.c=.o)
 
 $(NAME): $(OBJS)
-	$(CC) $(OBJS) -o $(NAME)
+	$(CC) $(FLAGS) $(SRC) -o $(NAME)
+
+all: $(NAME) $(OBJS)
 
 %.o: %.c
 		$(CC) $(FLAGS) -c $< -o $@
 
 clean:
-	$(RM) $(OBJS)
+	rm -rf $(NAME)
 
 fclean: clean
-	$(RM) $(NAME)
 
 re: fclean all
 
-.PHONY: re fclean clean all
+.PHONY: all clean fclean re

@@ -48,13 +48,16 @@ void	print(std::string str)
 	std::cout << str;
 }
 
-void ScalarConverter::conv_to_char(std::string num)
+void ScalarConverter::conv_to_char(std::string num, std::string hay)
 {
 
 	double res;
 	char *end;
 
-	if (num.length() == 1 && isalpha(num[0]))
+	print("char: ");
+	if (hay.find(num) != std::string::npos)
+		print("impossible\n");
+	else if (num.length() == 1 && isalpha(num[0]))
 	{
 		if (!isprint(num[0]))
 			print("Non Displayable\n");
@@ -73,12 +76,15 @@ void ScalarConverter::conv_to_char(std::string num)
 	}
 }
 
-void ScalarConverter::conv_to_int(std::string num)
+void ScalarConverter::conv_to_int(std::string num, std::string hay)
 {
 	double res;
 	char *end;
 
-	if (num.length() == 1 && !isdigit(num[0]))
+	print("int: ");
+	if (hay.find(num) != std::string::npos)
+		print("impossible\n");
+	else if (num.length() == 1 && !isdigit(num[0]))
 			std::cout << static_cast<int>(num[0]) << std::endl;
 	else
 	{
@@ -90,60 +96,44 @@ void ScalarConverter::conv_to_int(std::string num)
 	}
 }
 
-void ScalarConverter::conv_to_float(std::string num)
+void ScalarConverter::conv_to_float(std::string num, std::string hay)
 {
 	double res;
 	char *end;
 
-	if (num.length() == 1 && !isdigit(num[0]))
+	print("float: ");
+	if (hay.find(num) != std::string::npos)
+	{
+		if ((num.length() < 5 && num[num.length() - 1] == 'f') || num == "nan")
+		{
+			// print ("inside float\n ");
+			if (num != "nanf")
+				print(num + "f\n");
+			else
+				print("nanf\n");
+		}
+		else
+			print(num + "\n");
+	}
+	else if (num.length() == 1 && !isdigit(num[0]))
 			std::cout << std::fixed << std::setprecision(1) << static_cast<float>(num[0]) << "f" << std::endl;
 	else
 	{
 		res = strtod(num.c_str(), &end);
-		if ((errno == ERANGE || res == HUGE_VAL || res == -HUGE_VAL || res > FLT_MAX || res < FLT_MIN))
+		if ((errno == ERANGE && (res == HUGE_VAL || res == -HUGE_VAL) && res > FLT_MAX && res < -FLT_MIN))
 			print("Impossible\n");
 		else
 			std::cout  << std::fixed << std::setprecision(1) << static_cast<float>(res) << "f" << std::endl;
 	}
 }
 
-void ScalarConverter::conv_to_double(std::string num)
+void ScalarConverter::conv_to_double(std::string num, std::string hay)
 {
 	double res;
 	char *end;
 
-	if (num.length() == 1 && !isdigit(num[0]))
-			std::cout << std::fixed << std::setprecision(1) << static_cast<double>(num[0]) << std::endl;
-	else
-	{
-		res = strtod(num.c_str(), &end);
-		if ((errno == ERANGE || res == HUGE_VAL || res == -HUGE_VAL))
-			print("Impossible\n");
-		else
-			std::cout  << std::fixed << std::setprecision(1) << static_cast<double>(res) << std::endl;
-	}
-}
-
-
-int ScalarConverter::conv_to_inf(std::string num, std::string type)
-{
-	print(type + ": ");
-	std::string hay = "+inff-inffnanf";
-	if ((type == "int" || type == "char") && hay.find(num) != std::string::npos)
-		print("impossible\n");
-	else if (type == "float" && hay.find(num) != std::string::npos)
-	{
-		if (num.length() < 5 && num[num.length() - 1] == 'f')
-		{
-			if (num != "nanf")
-				print(num + "f\n");
-			else
-				print("nanf");
-		}
-		else
-			print(num + "\n");
-	}
-	else if (type == "double" && hay.find(num) != std::string::npos)
+	print("double: ");
+	if (hay.find(num) != std::string::npos)
 	{
 		if (num.length() == 5 && num[num.length() - 1] == 'f')
 				print(num.substr(0, num.length() - 1) + "\n");
@@ -155,42 +145,40 @@ int ScalarConverter::conv_to_inf(std::string num, std::string type)
 				print(num + "\n");
 		}
 	}
-	conv_to_char(num);
-	conv_to_int(num);
-	conv_to_float(num);
-	conv_to_double(num);
-	return (0);
+	else if (num.length() == 1 && !isdigit(num[0]))
+			std::cout << std::fixed << std::setprecision(1) << static_cast<double>(num[0]) << std::endl;
+	else
+	{
+		res = strtod(num.c_str(), &end);
+		if ((errno == ERANGE || res == HUGE_VAL || res == -HUGE_VAL))
+			print("Impossible\n");
+		else
+			std::cout  << std::fixed << std::setprecision(1) << static_cast<double>(res) << std::endl;
+	}
 }
-
 
  int ScalarConverter::convert(std::string num)
 {
 	int i;
 
 	i = 0;
-	int (*FooPtr[6])(std::string) = {CheckChar, CheckDouble, CheckInt, CheckFloat};
-	while (i < 6)
+	int (*FooPtr[4])(std::string) = {CheckChar, CheckDouble, CheckInt, CheckFloat};
+	while (i < 4)
 	{
 		if (FooPtr[i](num) == 0)
 			break ;
 		i++;
 	}
-	if (i == 6)
+	if (i == 4)
 		return (1);
-	switch(i)
-	{
-		case 1:
-			conv_to_inf(num, "char");
-		case 2:
-			conv_to_inf(num, "int");
-		case 3:
-			conv_to_inf(num, "double");
-		case 4:
-			conv_to_inf(num, "float");
-			break;
-		default:
-	}
+	std::string hay = "+inff-inffnanf";
+	conv_to_char(num, hay);
+	conv_to_int(num, hay);
+	conv_to_float(num, hay);
+	conv_to_double(num, hay);
+	return (0);
 }
+
 int	ScalarConverter::CheckInt(std::string num)
 {
 	size_t	i;
