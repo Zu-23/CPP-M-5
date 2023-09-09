@@ -21,5 +21,6 @@ public:
     void addNumber(int num);
     int shortestSpan();
     int longestSpan();
+    void spanIter(std::vector<int>::iterator begin, std::vector<int>::iterator end);
 };
 #endif

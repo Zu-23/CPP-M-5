@@ -55,3 +55,9 @@ int Span::longestSpan() {
     int res = vec[vec.size() - 1] - vec[0];
     return (res);
 }
+
+void Span::spanIter(std::vector<int>::iterator begin, std::vector<int>::iterator end) {
+    if (this->vec.size() + std::distance(begin, end) > this->N)
+        throw std::runtime_error("this range exceeds the vector's space");
+    vec.insert(vec.end(), begin, end);
+}
