@@ -2,42 +2,23 @@
 #include<string>
 #include<time.h>
 
-class Abstract
+void fo1()
 {
-public:
-  virtual void foo() = 0;
-};
+    std::cout << "fo 1" << std::endl;
+}
 
-class Implementation : public Abstract
+void fo2()
 {
-public:
-  void foo() { std::cout << "Foo!" << std::endl; }
-};
+    std::cout << "fo 2" << std::endl;
+}
 
-void call_foo(Abstract& obj) { obj.foo(); } 
-
-
-class pure
+void fo3()
 {
-    public:
-        void    execute(Abstract &obj)
-        {
-            try
-            {
-                std::cout  << "whaat" << std::endl;
-                obj.foo();
+        std::cout << "fo 3" << std::endl;
 
-            }
-            catch(...)
-            {
-                std::cout << "okay " << std::endl;
-            }
-        }
-};
-
+}
 int main()
 {
-    std::cout << "start pf test" << std::endl;
-    throw("some error");
-    std::cout << "did it" << std::endl;
+   void (*fo_ptr[3])(void) = {&fo1, &fo2, &fo3};
+   (*fo_ptr[0])();
 }

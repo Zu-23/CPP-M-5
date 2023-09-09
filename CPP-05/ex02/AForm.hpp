@@ -3,27 +3,31 @@
 
 # include <iostream>
 # include <string>
-#include "Bureaucrat.hpp"
+# include "Bureaucrat.hpp"
+class Bureaucrat;
 
 class Form
 {
 
 	private:
 		const std::string name;
-		bool			  sign;
 		const	int		  gradeSign;
 		const	int		  gradeExe;
+		bool			  sign;
 	public:
 		Form();
 		Form(std::string name, int grSign, int grExe);
 		Form( Form const & src );
-		~Form();
-		Form &		operator=( Form const & rhs );
-		std::string getName() const;
+		virtual ~Form();
 		int			getGradeSign() const;
+std::string 		getName() const;
 		int			getGradeExe() const;
 		bool		getSign() const;
 		void		beSigned(Bureaucrat& b);
+
+
+		Form&			operator=( Form const & rhs );
+		virtual void    execute( const Bureaucrat& executor ) const = 0;
 
 		class GradeTooHighException : public std::exception
 		{
@@ -33,6 +37,7 @@ class Form
 					return ("FORM: Grade too high");
 				}
 		};
+
 		class GradeTooLowException : public std::exception
 		{
 			public:
@@ -41,6 +46,15 @@ class Form
 					return ("FORM: Grade too low");
 				}
 		};
+
+		class NotSignedException : public std::exception
+		{
+			public:
+				virtual const char* what() const throw() 
+				{ 
+					return ("FORM: form is not signed"); 
+				}
+    };
 
 };
 

@@ -1,13 +1,16 @@
-#include "Form.hpp"
+#include "AForm.hpp"
 
 /*
 ** ------------------------------- CONSTRUCTOR --------------------------------
 */
 
-Form::Form(void)
+Form::Form(void) :name("default name"), gradeSign(1), gradeExe(1), sign(false)
+{
+	std::cout << "Form default constructor called" << std::endl;
+}
 
 
-Form::Form(std::string name, int grSign, int grExe) : name(name), gradeSign(grSign), sign(false), gradeExe(grExe)
+Form::Form(std::string name, int grSign, int grExe) : name(name), gradeSign(grSign), gradeExe(grExe), sign(false)
 {
 	try
 	{
@@ -27,7 +30,7 @@ Form::Form(std::string name, int grSign, int grExe) : name(name), gradeSign(grSi
 	std::cout << "Form constructor called " << this->name << std::endl;
 }
 
-Form::Form( const Form & src ) : name(src.name), gradeSign(src.gradeSign), sign(src.sign), gradeExe(src.gradeExe)
+Form::Form( const Form & src ) : name(src.name), gradeSign(src.gradeSign), gradeExe(src.gradeExe), sign(src.sign)
 {
 	std::cout << "Form copy constructor got called" << std::endl;
 }

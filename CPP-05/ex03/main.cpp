@@ -3,46 +3,19 @@
 #include "PresidentialPardonForm.hpp"
 #include "RobotomyRequestForm.hpp"
 #include "ShrubberyCreationForm.hpp"
+#include "Intern.hpp"
 
-////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////change the main/////////////////////////
 int main(void)
 {
-    try
-    {
-        Bureaucrat  *bureaucrat = new Bureaucrat("Bureaucrat", 40);
-        Form        *form = new PresidentialPardonForm("Form");
-        Form        *form2 = new RobotomyRequestForm("Form2");
-        Form        *form3 = new ShrubberyCreationForm("Chajarat_l3a2ila");
+    Intern      intern;
 
-        std::cout << *bureaucrat << std::endl;
-        std::cout << *form << std::endl;
-        std::cout << *form2 << std::endl;
-        std::cout << *form3 << std::endl;
-        std::cout << "----------------------------------------" << std::endl;
-        std::cout << "Sign Form section " << std::endl;
-        bureaucrat->signForm(*form);
-        bureaucrat->signForm(*form2);
-        bureaucrat->signForm(*form3);
-
-        std::cout << "----------------------------------------" << std::endl;
-        std::cout << *bureaucrat << std::endl;
-        std::cout << *form << std::endl;
-        std::cout << *form2 << std::endl;
-        std::cout << *form3 << std::endl;
-
-        std::cout << "----------------------------------------" << std::endl;
-        std::cout << "Execute Form section " << std::endl;
-        bureaucrat->executeForm(*form);
-        bureaucrat->executeForm(*form2);
-        bureaucrat->executeForm(*form3);
-    
-        delete bureaucrat;
-    }
-    catch(const std::exception& e)
-    {
-        std::cerr << "Grade out of range " << '\n';
-    }
-
-    return (0);
+    Form  *form1 = intern.makeForm("shrubbery creation", "Form1");
+    Form  *form2 = intern.makeForm("robotomy request", "Form2");
+    Form  *form3 = intern.makeForm("presidential pardon", "Form3");
+    std::cout << *form1 << std::endl;
+    std::cout << *form2 << std::endl;
+    std::cout << *form3 << std::endl;
+    delete form1;
+    delete form2;
+    delete form3;
 }

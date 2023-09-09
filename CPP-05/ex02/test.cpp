@@ -1,35 +1,43 @@
 #include<iostream>
 #include<string>
+#include<time.h>
 
-
-class base
+class Abstract
 {
-    protected:
-        int a;
-    public:
-        base(int i)
-        {
-            a = i;
-        }
-        virtual void pure_fo()= 0;
+public:
+  virtual void foo() = 0;
 };
 
-class derived : public base
+class Implementation : public Abstract
 {
-    private:
-        int b;
+public:
+  void foo() { std::cout << "Foo!" << std::endl; }
+};
+
+void call_foo(Abstract& obj) { obj.foo(); } 
+
+
+class pure
+{
     public:
-        derived(int i, int j) : base(i)
+        void    execute(Abstract &obj)
         {
-            pure_fo();
-        }
-        void pure_fo()
-        {
-            std::cout << "what the value of a? " << a << std::endl;
+            try
+            {
+                std::cout  << "whaat" << std::endl;
+                obj.foo();
+
+            }
+            catch(...)
+            {
+                std::cout << "okay " << std::endl;
+            }
         }
 };
 
 int main()
 {
-    derived obj(3, 5);
+    std::cout << "start pf test" << std::endl;
+    throw("some error");
+    std::cout << "did it" << std::endl;
 }

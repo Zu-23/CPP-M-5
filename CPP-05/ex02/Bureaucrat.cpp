@@ -102,6 +102,34 @@ const char *Bureaucrat::GradeTooLowException::what() const throw()
 {
 	return ("Grade too low");
 }
+
+void    Bureaucrat::executeForm(Form const & form)
+{
+    try
+    {
+        form.execute(*this);
+        std::cout << form.getName() << " executed" << std::endl;
+    }
+    catch(const std::exception& e)
+    {
+        std::cout << form.getName() << " not executed" << std::endl;
+    }
+}
+
+void Bureaucrat::signForm(Form &b)
+{
+	try
+	{
+		b.beSigned(*this);
+		std::cout << this->getName() << " signed form " << b.getName() << std::endl;
+
+	}
+	catch(Form::GradeTooLowException& f)
+	{
+			std::cout << this->getName() << " didn't sign form " << b.getName()
+			<< "because " << f.what() << std::endl;
+	}
+}
 /*
 ** --------------------------------- ACCESSOR ---------------------------------
 */
