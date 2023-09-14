@@ -3,7 +3,7 @@
 
 #include<iostream>
 
-class Boundlimit: public std::exception
+class ArrayLimit: public std::exception
 {
 public:
 	virtual const char* what() const throw()
@@ -67,7 +67,7 @@ class Array
 		T & operator[](unsigned int i) const
 		{
 			if (i > this->size())
-				throw (Boundlimit());
+				throw (ArrayLimit());
 			return this->array[i];
 		}
 
