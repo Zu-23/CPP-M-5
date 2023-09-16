@@ -1,7 +1,6 @@
 #ifndef EASYFIND_HPP
 #define EASYFIND_HPP
-#include <iostream>
-#include<algorithm>
+#include<iostream>
 #include<vector>
 
 class Error404NotFound: public std::exception
@@ -18,16 +17,8 @@ void	easyfind(T& conta, int i)
 {
 	typename T::const_iterator it;
 	it = std::find(conta.begin(), conta.end(), i);
-	try
-    {
-		if (it == conta.end())
-			throw (Error404NotFound());
-	}
-	catch (std::exception & exception)
-    {
-		std::cout << exception.what() << std::endl;
-		return ;
-	}
+	if (it == conta.end())
+		throw (Error404NotFound());
 	std::cout  << "Element found: " << *it << std::endl;
 }
 #endif

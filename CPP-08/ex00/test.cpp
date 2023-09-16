@@ -3,17 +3,19 @@
 
 int main()
 {
-
-   std::vector<char> vet;
-   vet.reserve(3);
-   vet.push_back('a');
-   std::cout << vet.size() << std::endl;
-
-   std::vector<char>::const_iterator it;
-   it = vet.cbegin();
-   while (it != vet.cend())
-   {
-     std::cout << *it << std::endl;
-     it++;
-   }
+  try
+  {
+    std::vector<int> vec(3);
+    vec.push_back(1);
+    vec.push_back(2);
+    vec.push_back(3);
+    std::vector<int>::iterator iter = vec.end();
+    iter += 100;
+    std::cout << *iter<< std::endl;
+    int val = vec.at(343);
+  }
+  catch (std::exception &e)
+  {
+    std::cout << e.what() << std::endl;
+  }
 }
