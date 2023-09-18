@@ -1,21 +1,28 @@
-NAME    		=      	Span
-CC              :=      c++ -Wall -Werror -Wextra -std=c++98
-SRC             := 		main.cpp Span.cpp
-OBJ             := 		$(SRC:.c=.o)
+NAME 	= Span
 
-$(NAME): $(OBJ)
-	$(CC) $(FLAGS) $(SRC) -o $(NAME)
+SRC		= main.cpp Span.cpp
+
+CC 		=	c++
+
+FLAGS	= -std=c++98 -Wall -Wextra -Werror 
+
+OBJS 	= $(SRC:.cpp=.o)
+
+LIB		= Span.hpp
+$(NAME): $(OBJS) $(LIB)
+	$(CC) $(FLAGS) $(OBJS) -o $(NAME)
 
 all: $(NAME) $(OBJS)
 
-%.o: %.c
-	(CC) $(FLAGS) -c $< -o $@
+%.o: %.cpp
+		$(CC) $(FLAGS) -c $< -o $@
 
 clean:
-	rm -rf $(NAME)
+	rm -rf $(OBJS)
 
 fclean: clean
+	rm -rf $(NAME)
 
 re: fclean all
 
-.PHONY: all clean fclean re%%      
+.PHONY: all clean fclean re
