@@ -61,7 +61,7 @@ void parse_value(std::string line)
 
     for (size_t i = 0; i < line.size(); i++)
     {
-        if (!std::isdigit(line[i]) || line.size() > 6 || line.empty())
+        if ((!std::isdigit(line[i]) && line[i] != '.' )|| line.empty())
         {
             flag = 1;
             break ;
@@ -70,12 +70,22 @@ void parse_value(std::string line)
     try
     {
         val = std::stod(line);
+        if (val < 0)
+            flag = 2;
+        else if (val > 1000)
+            flag = 3;
     }
     catch(const std::exception& e)
     {
         flag = 1;
     }
-    
+    if (flag)
+    {
+        if (flag == 1 || flag == 3)
+            std::cout << "Error: too large a number" << std::endl;
+        else if (flag == 2)
+            std::cout << "Error: not a positive number" << std::endl;
+    }
 }
 
 
@@ -153,8 +163,8 @@ void parse_row(std::string line)
 int main()
 {
    // parse_row("2010-01-01 | 34");
-   std::string line ="              2010-01-01        |           34     ";
-  get_date(line);
-  //parse_row(line);
+   std::string line ="              2010-01-01        |           24.43434    ";
+//   get_date(line);
+  parse_row(line);
 }
 
