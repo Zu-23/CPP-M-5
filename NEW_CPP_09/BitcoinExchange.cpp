@@ -2,10 +2,10 @@
 
 Bitcoin::Bitcoin()
 {
-	parse_file("data.csv");
+	get_data("data.csv");
 }
 
-int Bitcoin::parse_file(char * file_name)
+void Bitcoin::get_data(char * file_name)
 {
 	std::ifstream   file;
     std::string     date;
@@ -32,7 +32,70 @@ int Bitcoin::parse_file(char * file_name)
         {
             std::cout << "Invalid file data"<< '\n';
         }
-        this->inserto_map()
+        this->inserto_map();
 	}
     file.close();
 }
+
+void::Bitcoin::parse_date(std::string line, int unsc)
+{
+    std::cout << line << std::endl;
+    if (unsc == 0)
+    {
+        if (line.size() != 4)
+            throw(std::runtime_error("Invalid date | value\n"));
+        
+    }
+}
+
+void Bitcoin::parse_row(std::string line)
+{
+    //parse date
+    size_t pos;
+    size_t prev_pos;
+    int    unsc;
+
+    prev_pos = 0;
+    unsc = 0;
+    for(size_t i = 0; i < 3; i++)
+    {
+        pos = line.find('-', prev_pos);
+        if (pos != std::string::npos)
+        {
+            parse_date(line.substr(prev_pos, pos - prev_pos), unsc);
+            prev_pos = pos + 1;
+            unsc++;
+        }
+        else if (pos == std::string::npos)
+        {
+            if (unsc != 2)
+                std::cout << "error" << std::endl;
+            else
+                parse_date(line.substr(prev_pos, pos - prev_pos));
+        }
+    }
+    if (unsc != 2)
+        throw(std::runtime_error("Invalid date | value\n"));
+    //parse value
+    {
+
+    }
+}
+
+void    Bitcoin::parse_file(char *file_name)
+{
+    std::ifstream   file;
+    std::string     date;
+	std::string     row;
+    size_t          found;
+    double          val;
+
+    file.open(file_name);
+    if (file.fail())
+        throw(std::runtime_error("Error: could not open file"));
+    while (std::getline(file, row))
+    {
+        parse_row(row);
+    }
+}
+
