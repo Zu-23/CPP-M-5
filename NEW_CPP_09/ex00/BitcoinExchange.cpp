@@ -5,7 +5,29 @@ Bitcoin::Bitcoin()
 	get_data("data.csv");
 }
 
-void Bitcoin::get_data(char * file_name)
+Bitcoin::Bitcoin(Bitcoin & obj)
+{
+	*this = obj;
+}
+
+Bitcoin& Bitcoin::operator=(Bitcoin & obj)
+{
+	if (this != &obj)
+	{
+		obj.map = this->map;
+	}
+	return (*this);
+}
+
+Bitcoin::~Bitcoin()
+{}
+
+void Bitcoin::insert_map_data(std::string date, float val)
+{
+	std::pair<std::string, float> p(date, val);
+	this->map.insert(p);
+}
+void Bitcoin::get_data(std::string file_name)
 {
 	std::ifstream   file;
     std::string     date;
@@ -26,13 +48,13 @@ void Bitcoin::get_data(char * file_name)
 		date = row.substr(0, found);
         try
         {
-             val = std::stod(row.substr(found + 1));
+             val = std::strtod(row.substr(found + 1).c_str(), NULL);
         }
         catch(const std::exception& e)
         {
             std::cout << "Invalid file data"<< '\n';
         }
-        inserto_map_data(date, val);
+        insert_map_data(date, val);
 	}
     file.close();
 }
@@ -43,7 +65,6 @@ int Bitcoin::parse_date(std::string subline, int unsc, std::string line)
 	int flag;
 
 	flag = 0;
-	std::cout << subline << std::endl;
 	if (unsc == 0)
 	{
 		if (subline.size() != 4)
@@ -86,7 +107,7 @@ int Bitcoin::parse_date(std::string subline, int unsc, std::string line)
 	return (0);
 }
 
-int Bitcoin::parse_value(std::string line)
+double Bitcoin::parse_value(std::string line)
 {
 	int flag = 0;
 	double val;
@@ -101,7 +122,7 @@ int Bitcoin::parse_value(std::string line)
 	}
 	try
 	{
-		val = std::stod(line);
+		val = std::strtod(line.c_str(), NULL);
 		if (val < 0)
 			flag = 2;
 		else if (val > 1000)
@@ -123,7 +144,7 @@ int Bitcoin::parse_value(std::string line)
 }
 
 
-std::string trim(const std::string& str)
+std::string Bitcoin::trim(const std::string& str)
 {
 	size_t start = str.find_first_not_of(" \t\n\r\f\v");
 	size_t end = str.find_last_not_of(" \t\n\r\f\v");
@@ -143,18 +164,16 @@ std::string Bitcoin::get_date(std::string &line)
 	apip = trim(line.substr(pos + 1));
 	line.erase(pos);
 	line = trim(line);
-	std::cout << "apip = " << apip << std::endl << "line = " << line << std::endl;
 	return (apip);
 }
 
-int check_month_day(std::string date)
+int Bitcoin::check_month_day(std::string date)
 {
     int monthDays[] = {0,31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
     std::string stMonth = date.substr(5,2);
     std::string stDay = date.substr(8,2);
     int month = std::atoi(stMonth.c_str());
     int day = std::atoi(stDay.c_str());
-    std::cout << "day = " << day << " month " << month << std::endl;
     if (monthDays[month] < day)
     {
         std::cout << "Error: bad input => " << date << std::endl;
@@ -169,11 +188,13 @@ void Bitcoin::parse_row(std::string line)
 	size_t prev_pos;
 	std::string apip;
 	int     unsc;
-	int     value;
+	double     value;
 
 	prev_pos = 0;
 	unsc = 0;
 
+	if (line == "date | value")
+		return ;
 	apip = get_date(line);
 	if (apip.empty())
 	{
@@ -194,7 +215,7 @@ void Bitcoin::parse_row(std::string line)
 		{
 			if (unsc != 2)
 			{
-				std::cout << "Error: bad input => " << line << std::endl;
+				std::cout << "Error: bad input1 => " << line << std::endl;
 				return ;
 			}
 			else
@@ -209,18 +230,17 @@ void Bitcoin::parse_row(std::string line)
 	}
 	if (check_month_day(line) || (value = parse_value(apip)) == -1)
 		return ;
-    inserto_map(line, value);
+    calculate_data(line, value);
 }
 
-void Bitcoin::inserto_pair(std::string date, float value)
+
+void Bitcoin::calculate_data(std::string date, float value)
 {
 	std::pair<std::string, float> p(date, value);
-	this->map.upper
-}
-
-void Bitcoin::calculate_data()
-{
-	
+    std::map<std::string, float>::iterator it = this->map.lower_bound(p.first);
+	if (it == this->map.end())
+		it--;
+	std::cout << date << " => " << value << " = " << it->second * value << std::endl;
 }
 
 void    Bitcoin::parse_file(char *file_name)
@@ -228,17 +248,17 @@ void    Bitcoin::parse_file(char *file_name)
 	std::ifstream   file;
 	std::string     date;
 	std::string     row;
-	size_t          found;
-	double          val;
 
 	file.open(file_name);
 	if (file.fail())
 		throw(std::runtime_error("Error: could not open file"));
 	while (std::getline(file, row))
 	{
+		if (row.empty())
+			continue;
 		parse_row(row);
-		calculate_data();
 	}
+	file.close();
 }
 
 

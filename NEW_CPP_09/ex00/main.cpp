@@ -12,7 +12,6 @@ int main(int ac, char **av)
     }
     else
     {
-        btc.prase_file(file);
+        btc.parse_file(av[1]);
     }
-    file.close();
 }
