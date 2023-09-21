@@ -116,13 +116,26 @@ std::string get_date(std::string &line)
     return (apip);
 }
 
-void inserto_pair(std::string date, float value)
+void inserto_pair(std::string date, float value)//problem: input date is uppered to the highest date
 {
     std::map<std::string, float> map;
-    map["2011-01-02"] = 94;
-    map.insert(std::pair<std::string, float>("33", 3));
-    std::cout << map["2011-01-02"] << std::endl;
+    // map["2021-03-02"] = 6;
+    // map["2011-01-02"] = 3;
+    // map["2010-04-02"] = 7;
+    // map["2011-02-02"] = 5;
+    // map["2009-06-02"] = 8;
 	std::pair<std::string, float> p(date, value);
+	map.insert(p);
+    // std::map<std::string, float>::iterator it = map.lower_bound(p.first);
+	std::map<std::string, float>::iterator it = map.begin();
+	for(;it != map.end(); it++)
+	{
+		std::cout << it->first << " " << it->second << std::endl;
+	}
+	// if (it == map.end())
+	// 	it--;
+	// std::cout << "map date  = " << it->first << " map value = " << it->second 
+	// << " date  =  " << date <<  " value = " << value << std::endl;
 }
 
 int check_month_day(std::string date)
@@ -190,12 +203,9 @@ void parse_row(std::string line)
 }
 int main()
 {
-   // parse_row("2010-01-01 | 34");
-   std::string line ="2011-01-02";
-
-   check_month_day(line);
-//   get_date(line);
- // parse_row(line);
- //inserto_pair("",0);
+    inserto_pair("2012-01-02", static_cast<float> (2));
+    inserto_pair("2010-02-02", static_cast<float> (3));
+    inserto_pair("2022-03-02", static_cast<float> (4.6));
+    inserto_pair("123-04-02", static_cast<float> (5.121));
 }
 
