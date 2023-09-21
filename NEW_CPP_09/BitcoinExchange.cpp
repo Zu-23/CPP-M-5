@@ -147,6 +147,22 @@ std::string Bitcoin::get_date(std::string &line)
 	return (apip);
 }
 
+int check_month_day(std::string date)
+{
+    int monthDays[] = {0,31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+    std::string stMonth = date.substr(5,2);
+    std::string stDay = date.substr(8,2);
+    int month = std::atoi(stMonth.c_str());
+    int day = std::atoi(stDay.c_str());
+    std::cout << "day = " << day << " month " << month << std::endl;
+    if (monthDays[month] < day)
+    {
+        std::cout << "Error: bad input => " << date << std::endl;
+        return (1);
+    }
+   return (0);
+}
+
 void Bitcoin::parse_row(std::string line)
 {
 	size_t pos;
@@ -191,8 +207,9 @@ void Bitcoin::parse_row(std::string line)
 		std::cout << "Error: bad input => " << line << std::endl;
 		return ;
 	}
-	if ((value = parse_value(apip)) != -1)
-		inserto_map(line, value);
+	if (check_month_day(line) || (value = parse_value(apip)) == -1)
+		return ;
+    inserto_map(line, value);
 }
 
 void Bitcoin::inserto_pair(std::string date, float value)

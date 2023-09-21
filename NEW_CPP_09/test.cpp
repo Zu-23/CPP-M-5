@@ -2,15 +2,16 @@
 #include<utility>
 #include<map>
 #include<string>
+#include <cstdlib>
 #include <fstream>
 #include <string>
 
 
 int parse_date(std::string subline, int unsc, std::string line)
 {
-    int flag;
+    int flag = 0;
+   
 
-    flag = 0;
     std::cout << subline << std::endl;
     if (unsc == 0)
     {
@@ -26,15 +27,15 @@ int parse_date(std::string subline, int unsc, std::string line)
             flag = 1;
        try
        {
-            double date = std::stod(subline);
-            if (unsc == 1)
+            double date = std::atoi(subline.c_str());
+            if (unsc == 1) //month
             {
-                if (date < 0 || date > 12)
+                if (date < 1 || date > 12)
                     flag = 1;
             }
-            else if (unsc == 2)
+            else if (unsc == 2) //days
             {
-                if (date < 0 || date > 31)
+                if (date < 1 || date > 31)
                     flag = 1;
             }
             for (size_t i = 0; i < subline.size(); i++)
@@ -46,6 +47,7 @@ int parse_date(std::string subline, int unsc, std::string line)
             flag = 1;
        }
     }
+
     if (flag)
     {
         std::cout << "Error: bad input => " << line << std::endl; 
@@ -54,7 +56,7 @@ int parse_date(std::string subline, int unsc, std::string line)
     return (0);
 }
 
-void parse_value(std::string line)
+int parse_value(std::string line)
 {
     int flag = 0;
     double val = 0;
@@ -69,7 +71,7 @@ void parse_value(std::string line)
     }
     try
     {
-        val = std::stod(line);
+        val = std::strtod(line.c_str(), NULL);
         if (val < 0)
             flag = 2;
         else if (val > 1000)
@@ -86,6 +88,7 @@ void parse_value(std::string line)
         else if (flag == 2)
             std::cout << "Error: not a positive number" << std::endl;
     }
+    return (flag);
 }
 
 
@@ -111,6 +114,31 @@ std::string get_date(std::string &line)
     line = trim(line);
     std::cout << "apip = " << apip << std::endl << "line = " << line << std::endl;
     return (apip);
+}
+
+void inserto_pair(std::string date, float value)
+{
+    std::map<std::string, float> map;
+    map["2011-01-02"] = 94;
+    map.insert(std::pair<std::string, float>("33", 3));
+    std::cout << map["2011-01-02"] << std::endl;
+	std::pair<std::string, float> p(date, value);
+}
+
+int check_month_day(std::string date)
+{
+    int monthDays[] = {0,31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+    std::string stMonth = date.substr(5,2);
+    std::string stDay = date.substr(8,2);
+    int month = std::atoi(stMonth.c_str());
+    int day = std::atoi(stDay.c_str());
+    std::cout << "day = " << day << " month " << month << std::endl;
+    if (monthDays[month] < day)
+    {
+        std::cout << "Error: bad input => " << date << std::endl;
+        return (1);
+    }
+   return (0);
 }
 
 void parse_row(std::string line)
@@ -157,14 +185,17 @@ void parse_row(std::string line)
         return ;
     }
     //parse value
-    parse_value(apip);
+    if (check_month_day(line) ||  parse_value(apip))
+        return ;
 }
-
 int main()
 {
    // parse_row("2010-01-01 | 34");
-   std::string line ="              2010-01-01        |           24.43434    ";
+   std::string line ="2011-01-02";
+
+   check_month_day(line);
 //   get_date(line);
-  parse_row(line);
+ // parse_row(line);
+ //inserto_pair("",0);
 }
 
