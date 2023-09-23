@@ -3,15 +3,21 @@
 
 #include<iostream>
 #include<string>
-parse_input(std::string line)
-{
-	std::string op = "+-/*";
-   for(size_t i = 0; i < line.size(); i++)
-   {
-		if (!std::isspace(line[i]) && !std::isdigit(line[i] && op.find(line[i]) == std::string::npos))
-   }
+#include<stack>
 
-    
+class Rpn
+{
+   private:
+      std::stack<int> instk;
+      void ft_perror(std::string str);
+      void calculate(std::stack<int> &di_stk, char oprt);
+      int parse_expression(std::string expr);
+      void parse_input(std::string line);
+   public:
+      Rpn();
+      Rpn(Rpn &obj);
+      ~Rpn();
+   Rpn& operator=(Rpn &obj);
 }
 
 #endif

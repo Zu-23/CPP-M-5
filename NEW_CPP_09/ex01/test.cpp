@@ -9,7 +9,7 @@ void ft_perror(std::string str)
 	exit(1);
 }
 
-void calculate(std::stack<int> &di_stk, std::stack<char> &ch_stk)
+void calculate(std::stack<int> &di_stk, char oprt)
 {
 	int fst;
 	int scnd;
@@ -25,23 +25,19 @@ void calculate(std::stack<int> &di_stk, std::stack<char> &ch_stk)
 	}
 	fst = di_stk.top();
 	di_stk.pop();
-	switch (ch_stk.top())
+	switch (oprt)
 	{
 	case '+':
 		di_stk.push(fst + scnd);
-		ch_stk.pop();
 		break;
 	case '-':
 		di_stk.push(fst - scnd);
-		ch_stk.pop();
 		break;
 	case '*':
 		di_stk.push(fst * scnd);
-		ch_stk.pop();
 		break;
 	case '/':
 		di_stk.push(fst / scnd);
-		ch_stk.pop();
 		break;
 	default:
 		break;
@@ -52,7 +48,6 @@ int parse_expression(std::string expr)
 {
 	int digit = 0;
 	std::stack<int> di_stk;
-	std::stack<char> ch_stk;
 	for (size_t i = 0; i < expr.size(); i++)
 	{
 		if (std::isdigit(expr[i]))
@@ -73,17 +68,11 @@ int parse_expression(std::string expr)
 				ft_perror("Errrror");
 			}
 			digit = 0;
-			ch_stk.push(expr[i]);
-			calculate(di_stk, ch_stk);
+			calculate(di_stk, expr[i]);
 		}
 	}
 		if (digit != 0)
 			ft_perror("Error: bad expression");
-	// while (!di_stk.empty())
-	// {
-	// 	std::cout << "stk = " << di_stk.top() << std::endl;
-	// 	di_stk.pop();
-	// }
 	std::cout << "res = " << di_stk.top() << std::endl;
 	return (0);
 }
