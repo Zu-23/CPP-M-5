@@ -62,9 +62,36 @@ int PmergeMe::validNum(char **av, int ac)
 
 void PmergeMe::parse_input(char **av, int ac)
 {
-	std::istringstream s()
-	validNum(av, ac);// test with 2 digits
+	int val;
+	timeval start;
+	timeval end;
 
+    std::vector<int> vec;// private
+    std::list<int> lst;//this->lst
+    for (size_t i = 1 ; i < ac; i++)
+	{
+		std::string str = av[i];
+        val = std::atoi(str.c_str());
+        if (val < 0)
+            std::cout << "Invalid arguemnt\n";
+        vec.push_back(val);
+        lst.push_back(val);
+    }
+    std::vector<int>::iterator it;
+    std::cout << "before sort" << std::endl;
+    for (it = vec.begin(); it != vec.end(); it++)
+    {
+        std::cout << *it << " ";
+    }
+    std::cout << "after sort" << std::endl;
+	start = time();
+   	MergeSort_vector(vec, 0, vec.size() - 1);
+	end = time();
+	printTime(start, end, msg);
+	start = time();
+   	MergeSort_list(lst);
+	end = time();
+	
 	
 }
 
