@@ -34,18 +34,13 @@ void merge(std::list<int>& arr, std::list<int>& leftArr, std::list<int>& rightAr
     }
 }
 
-// Merge-sort function for lists
-void mergeSort(std::list<int>& arr)
-{
-    if (arr.size() <= 1) {
-        return;
-    }
 
+void MergeSort_list(std::list<int>& arr)
+{
     std::list<int> leftArr;
     std::list<int> rightArr;
-    int mid = arr.size() / 2;
 
-    // Split the list into two sublists
+    int mid = arr.size() / 2;
     std::list<int>::iterator it = arr.begin();
     for (int i = 0; i < mid; ++i)
     {
@@ -57,18 +52,11 @@ void mergeSort(std::list<int>& arr)
         rightArr.push_back(*it);
         ++it;
     }
-
-    // Recursively sort the sublists
-    mergeSort(leftArr);
-    mergeSort(rightArr);
-
-    // Merge the sorted sublists
+    MergeSort_list(leftArr);
+    MergeSort_list(rightArr);
     arr.clear();
     merge(arr, leftArr, rightArr);
 }
-
-
-
 
 void merge(std::vector<int>& arr, int left, int mid, int right)
 {
@@ -81,11 +69,13 @@ void merge(std::vector<int>& arr, int left, int mid, int right)
     {
         leftArr[i] = arr[left + i];
     }
-    for (int i = 0; i < ritsiz; ++i) {
+    for (int i = 0; i < ritsiz; ++i)
+    {
         rightArr[i] = arr[mid + 1 + i];
     }
     int i = 0, j = 0, k = left;
-    while (i < lftsiz && j < ritsiz) {
+    while (i < lftsiz && j < ritsiz)
+    {
         if (leftArr[i] <= rightArr[j])
         {
             arr[k] = leftArr[i];
@@ -111,7 +101,7 @@ void merge(std::vector<int>& arr, int left, int mid, int right)
 
 //3 5 1 7
 
-void MergeSort_vector(std::vector<int>& arr, int left, int right)
+void MergeSort_vector(std::vector<int>& arr, int left, int right) // 0 6
 {
     //1- left = 0. right = 3. mid = 1
     //2- left = 0. right = 1. mid = 0 >> 2.1 left = 1. right = 1 << return (2)
