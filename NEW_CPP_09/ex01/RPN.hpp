@@ -8,16 +8,16 @@
 class Rpn
 {
    private:
-      std::stack<int> instk;
-      void ft_perror(std::string str);
-      void calculate(std::stack<int> &di_stk, char oprt);
-      int parse_expression(std::string expr);
-      void parse_input(std::string line);
+		 std::stack<int> instk;
+		 void calculate(std::stack<int> &di_stk, char oprt);
+		 int parse_expression(std::string expr);
    public:
-      Rpn();
-      Rpn(const Rpn &obj);
-      ~Rpn();
-   Rpn& operator=(const Rpn &obj);
+		 Rpn();
+		 void parse_input(std::string line);
+		 Rpn(const Rpn &obj);
+		 ~Rpn();
+	  Rpn& operator=(const Rpn &obj);
 };
 
+ void ft_perror(std::string str);
 #endif

@@ -20,8 +20,8 @@ void calculate(std::stack<int> &di_stk, char oprt)
 	di_stk.pop();
 	if (di_stk.empty())
 	{
-		std::cout << "single digit " <<  scnd << std::endl;
-		//exit(1);
+		std::cout << scnd << std::endl;
+		exit(1);
 	}
 	fst = di_stk.top();
 	di_stk.pop();
@@ -67,11 +67,8 @@ int parse_expression(std::string expr)
 		}
 	}
 		if (digit != 0)
-		{
 			ft_perror("Error2: bad expression");
-
-		}
-	std::cout << "res = " << di_stk.top() << std::endl;
+	std::cout << di_stk.top() << std::endl;
 	return (0);
 }
 

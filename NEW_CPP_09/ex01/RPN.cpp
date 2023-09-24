@@ -1,7 +1,6 @@
 #include "RPN.hpp"
 Rpn::Rpn()
 {
-
 }
 
 Rpn::Rpn(const Rpn& obj)
@@ -12,9 +11,13 @@ Rpn::Rpn(const Rpn& obj)
 Rpn& Rpn::operator=(const Rpn& obj)
 {
 	this->instk = obj.instk;
+	return *this;
 }
 
-void Rpn::ft_perror(std::string str)
+Rpn::~Rpn()
+{}
+
+void ft_perror(std::string str)
 {
 	std::cout << str << std::endl;
 	exit(1);
@@ -31,8 +34,8 @@ void Rpn::calculate(std::stack<int> &di_stk, char oprt)
 	di_stk.pop();
 	if (di_stk.empty())
 	{
-		std::cout << "hola : " << scnd << std::endl;
-		return ;
+		ft_perror("Error: bad expression");
+		exit(1);
 	}
 	fst = di_stk.top();
 	di_stk.pop();
@@ -61,6 +64,7 @@ int Rpn::parse_expression(std::string expr)
 {
 	int digit = 0;
 	std::stack<int> di_stk;
+	std::stack
 	for (size_t i = 0; i < expr.size(); i++)
 	{
 		if (std::isdigit(expr[i]))
@@ -72,14 +76,7 @@ int Rpn::parse_expression(std::string expr)
 		else
 		{
 			if (digit == 0 && di_stk.size() != 2)
-			{
-				while (!di_stk.empty())
-				{
-					std::cout << "stk = " << di_stk.top() << std::endl;
-					di_stk.pop();
-				}
-				ft_perror("Errrror");
-			}
+				ft_perror("Error: bad expression");
 			digit = 0;
 			calculate(di_stk, expr[i]);
 		}
@@ -105,6 +102,5 @@ void Rpn::parse_input(std::string line)
    }
    if (expr.size() < 2)
 		ft_perror("Error: bad expression");
-	std::cout << expr << std::endl;
 	parse_expression(expr);
 }
