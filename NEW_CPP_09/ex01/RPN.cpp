@@ -1,4 +1,19 @@
 #include "RPN.hpp"
+Rpn::Rpn()
+{
+
+}
+
+Rpn::Rpn(const Rpn& obj)
+{
+	*this = obj;
+}
+
+Rpn& Rpn::operator=(const Rpn& obj)
+{
+	this->instk = obj.instk;
+}
+
 void Rpn::ft_perror(std::string str)
 {
 	std::cout << str << std::endl;
@@ -33,6 +48,8 @@ void Rpn::calculate(std::stack<int> &di_stk, char oprt)
 		di_stk.push(fst * scnd);
 		break;
 	case '/':
+		if (scnd == 0)
+			ft_perror("Can't divide by 0");
 		di_stk.push(fst / scnd);
 		break;
 	default:

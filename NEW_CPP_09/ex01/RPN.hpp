@@ -15,9 +15,9 @@ class Rpn
       void parse_input(std::string line);
    public:
       Rpn();
-      Rpn(Rpn &obj);
+      Rpn(const Rpn &obj);
       ~Rpn();
-   Rpn& operator=(Rpn &obj);
-}
+   Rpn& operator=(const Rpn &obj);
+};
 
 #endif

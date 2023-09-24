@@ -15,13 +15,13 @@ void calculate(std::stack<int> &di_stk, char oprt)
 	int scnd;
 
 	if (di_stk.empty())
-		ft_perror("Error: bad expression");
+		ft_perror("Error3: bad expression");
 	scnd = di_stk.top();
 	di_stk.pop();
 	if (di_stk.empty())
 	{
-		std::cout << "hola : " << scnd << std::endl;
-		return ;
+		std::cout << "single digit " <<  scnd << std::endl;
+		//exit(1);
 	}
 	fst = di_stk.top();
 	di_stk.pop();
@@ -37,6 +37,8 @@ void calculate(std::stack<int> &di_stk, char oprt)
 		di_stk.push(fst * scnd);
 		break;
 	case '/':
+		if (scnd == 0)
+			ft_perror("Can't divide by 0");
 		di_stk.push(fst / scnd);
 		break;
 	default:
@@ -53,26 +55,22 @@ int parse_expression(std::string expr)
 		if (std::isdigit(expr[i]))
 		{
 			if (++digit > 2)
-				ft_perror("Error: bad expression");
+				ft_perror("Error4: bad expression");
 			di_stk.push(expr[i] - '0');
 		}
 		else
 		{
-			if (digit == 0 && di_stk.size() != 2)
-			{
-				while (!di_stk.empty())
-				{
-					std::cout << "stk = " << di_stk.top() << std::endl;
-					di_stk.pop();
-				}
-				ft_perror("Errrror");
-			}
+			if ((digit == 0 && di_stk.size() != 2))
+				ft_perror("Error1: bad expression");
 			digit = 0;
 			calculate(di_stk, expr[i]);
 		}
 	}
 		if (digit != 0)
-			ft_perror("Error: bad expression");
+		{
+			ft_perror("Error2: bad expression");
+
+		}
 	std::cout << "res = " << di_stk.top() << std::endl;
 	return (0);
 }
@@ -98,5 +96,5 @@ void parse_input(std::string line)
 
 int main()
 {
-	parse_input("1 2 * 2 / 2 * 2 4 - +");
+	parse_input("24 7 -");
 }
