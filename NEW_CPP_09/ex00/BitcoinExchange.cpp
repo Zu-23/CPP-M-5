@@ -67,11 +67,14 @@ int Bitcoin::parse_date(std::string subline, int unsc, std::string line)
 	flag = 0;
 	if (unsc == 0)
 	{
-		if (subline.size() != 4)
-			flag = 1;
+		// if (subline.size() < 4)
+		// 	flag = 1;
 	   for (size_t i = 0; i < subline.size(); i++)
 			if (!std::isdigit(subline[i]))
 				flag = 1;
+  		int date = std::atoi(subline.c_str());
+		if (date <= 0)
+			flag = 1;
 	}
 	else
 	{
@@ -79,7 +82,7 @@ int Bitcoin::parse_date(std::string subline, int unsc, std::string line)
 			flag = 1;
 	   try
 	   {
-			double date = std::stod(subline);
+			int date = std::atoi(subline.c_str());
 			if (unsc == 1)
 			{
 				if (date < 0 || date > 12)
@@ -169,12 +172,18 @@ std::string Bitcoin::get_date(std::string &line)
 
 int Bitcoin::check_month_day(std::string date)
 {
-    int monthDays[] = {0,31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-    std::string stMonth = date.substr(5,2);
-    std::string stDay = date.substr(8,2);
+     int monthDays[] = {0,31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+	size_t pos = date.find('-') + 1;
+	std::string stYear = date.substr(0, pos - 1);
+    std::string stMonth = date.substr(pos, 2);
+    std::string stDay = date.substr(pos + 3, 2);
     int month = std::atoi(stMonth.c_str());
     int day = std::atoi(stDay.c_str());
-    if (monthDays[month] < day)
+	int year = std::atoi(stYear.c_str());
+	if (month == 2 && (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0)))
+        monthDays[month] = 29;
+
+    if (day > monthDays[month])
     {
         std::cout << "Error: bad input => " << date << std::endl;
         return (1);

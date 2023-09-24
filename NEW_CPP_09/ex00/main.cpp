@@ -4,14 +4,24 @@
 
 int main(int ac, char **av)
 {
-    Bitcoin btc;
-    if (ac != 2)
+    try
     {
-        std::cout << "Error: could not open file." << std::endl;
-        return (1);
+        if (ac != 2)
+        {
+            std::cout << "Error: wrong number of arguments\nUsage: ./btc <file_name>" << std::endl;
+            return (1);
+        }
+        else
+        {
+            Bitcoin btc;
+            btc.parse_file(av[1]);
+        }
     }
-    else
+    catch(const std::exception& e)
     {
-        btc.parse_file(av[1]);
+        std::cerr << e.what() << '\n';
     }
-}
+    
+     
+    return (0);
+    }
