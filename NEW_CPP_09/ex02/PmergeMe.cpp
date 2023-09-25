@@ -29,10 +29,6 @@ PmergeMe::~PmergeMe()
 
 PmergeMe &				PmergeMe::operator=( PmergeMe const & rhs )
 {
-	//if ( this != &rhs )
-	//{
-		//this->_value = rhs.getValue();
-	//}
     (void)rhs;
 	return *this;
 }
@@ -66,8 +62,8 @@ void printTime(timeval start, timeval end, std::string std, size_t range)
 {
     std::cout << "Time to process a range of " << range
     << " elements with std::" << std << " : "  
-    << (end.tv_sec * 1e6 + end.tv_usec) - (start.tv_sec * 1e6 + start.tv_usec)
-    << "us";
+    << (end.tv_sec * 1e6 + end.tv_usec) - (start.tv_sec * 1e6 + start.tv_usec) << " us"
+    << std::endl;
 }
 void printVector(std::vector<int> vec)
 {
@@ -77,7 +73,13 @@ void printVector(std::vector<int> vec)
     std::cout << std::endl;
 }
 
-
+void printDeque(std::deque<int> dq)
+{
+    std::deque<int>::iterator it;
+    for (it = dq.begin(); it != dq.end(); it++)
+        std::cout << *it << " ";
+    std::cout << std::endl;
+}
 void PmergeMe::parse_input(char **av, int ac)
 {
 	int val;
@@ -112,13 +114,12 @@ void PmergeMe::parse_input(char **av, int ac)
    	MergeSort_dq(0, dq.size() - 1, dq);
 	gettimeofday(&end, NULL);
     printTime(start, end, "deque<int>", dq.size());
-	
-	
+    //printDeque(dq);
 }
 
 //	--------------------DEQUE MERGE SORT-------------------
 
-void merge(int beg, int mid, int end, std::deque<int> &dq)
+void PmergeMe::merge(int beg, int mid, int end, std::deque<int> &dq)
 {
 	int	n1 = mid - beg + 1;
 	int	n2 = end - mid;
@@ -153,7 +154,7 @@ void merge(int beg, int mid, int end, std::deque<int> &dq)
 	}
 }
 
-void MergeSort_dq(int beg, int end, std::deque<int> &dq)
+void PmergeMe::MergeSort_dq(int beg, int end, std::deque<int> &dq)
 {
     int treshold = 5;
 	if (end - beg > treshold)

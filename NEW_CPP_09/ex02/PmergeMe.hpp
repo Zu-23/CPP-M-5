@@ -12,11 +12,11 @@
 class PmergeMe
 {
 	private:
-        std::vector<int> vec;
-        std::list<int> lst;
 		void  validNum(char **av, int ac);
-		void merge(std::list<int>& arr, std::list<int>& leftArr, std::list<int>& rightArr);
-		void MergeSort_list(std::list<int>& arr);
+		//deque functions
+		void merge(int beg, int mid, int end, std::deque<int> &dq);
+		void MergeSort_dq(int beg, int end, std::deque<int> &dq);
+		//vector functions
 		void merge(std::vector<int>& arr, int left, int mid, int right);
 		void MergeSort_vector(std::vector<int>& arr, int left, int right);
 	public:
