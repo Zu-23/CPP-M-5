@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   PmergeMe.hpp                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: zhaddoum <zhaddoum@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/25 23:51:12 by zhaddoum          #+#    #+#             */
+/*   Updated: 2023/09/25 23:51:16 by zhaddoum         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef PMERGEME_HPP
 # define PMERGEME_HPP
 
@@ -8,7 +20,8 @@
 #include<deque>
 #include<algorithm>
 #include <sys/time.h>
-//BRING BACK THE FLAGSSSS
+
+
 class PmergeMe
 {
 	private:

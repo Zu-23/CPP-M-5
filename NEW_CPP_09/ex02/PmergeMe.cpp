@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   PmergeMe.cpp                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: zhaddoum <zhaddoum@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/25 23:51:09 by zhaddoum          #+#    #+#             */
+/*   Updated: 2023/09/25 23:51:10 by zhaddoum         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "PmergeMe.hpp"
 
 /*
@@ -114,7 +126,7 @@ void PmergeMe::parse_input(char **av, int ac)
    	MergeSort_dq(0, dq.size() - 1, dq);
 	gettimeofday(&end, NULL);
     printTime(start, end, "deque<int>", dq.size());
-    //printDeque(dq);
+    printDeque(dq);
 }
 
 //	--------------------DEQUE MERGE SORT-------------------
