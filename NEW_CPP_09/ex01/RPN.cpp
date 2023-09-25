@@ -10,7 +10,7 @@ Rpn::Rpn(const Rpn& obj)
 
 Rpn& Rpn::operator=(const Rpn& obj)
 {
-	this->instk = obj.instk;
+	(void)obj;
 	return *this;
 }
 
@@ -28,8 +28,10 @@ void Rpn::calculate(std::stack<int> &di_stk, std::stack<char> &oprt)
 	int fst;
 	int scnd;
 
-	if (di_stk.empty() || di_stk.size() != 2)
+	if (di_stk.empty())
+	{
 		ft_perror("Error: bad expression");
+	}
 	scnd = di_stk.top();
 	di_stk.pop();
 	if (di_stk.empty())
@@ -62,7 +64,6 @@ void Rpn::calculate(std::stack<int> &di_stk, std::stack<char> &oprt)
 
 int Rpn::parse_expression(std::string expr)
 {
-	int digit = 0;
 	std::stack<int> di_stk;
 	std::stack<char> oprt;
 	for (size_t i = 0; i < expr.size(); i++)
@@ -78,7 +79,7 @@ int Rpn::parse_expression(std::string expr)
 	}
 	if (di_stk.size() != 1 || oprt.size() != 0)
 		ft_perror("Error: bad expression");
-	std::cout << "res = " << di_stk.top() << std::endl;
+	std::cout << di_stk.top() << std::endl;
 	return (0);
 }
 
@@ -92,10 +93,14 @@ void Rpn::parse_input(std::string line)
 		var = op.find(line[i]);
 		if (!std::isspace(line[i]) && !std::isdigit(line[i]) && var  == std::string::npos)
 			ft_perror("Error: bad expression");
+		else if (std::isdigit(line[i]) && line[i + 1] != '\0' && std::isdigit(line[i + 1]))
+			ft_perror("Error: bad expression");
+		else if (var != std::string::npos && line[i + 1] != '\0' && std::isdigit(line[i + 1]))
+			ft_perror("Error: bad expression");
 		else if (std::isdigit(line[i]) || var  != std::string::npos)
 			expr += line[i];
    }
    if (expr.size() < 2)
-		ft_perror("Error: bad expression");
+		ft_perror("Please put a valid expression");
 	parse_expression(expr);
 }

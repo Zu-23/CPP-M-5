@@ -8,8 +8,8 @@
 class Rpn
 {
    private:
-		 void calculate(std::stack<int> &di_stk, std::stack<char> &oprt);
-		 int parse_expression(std::string expr);
+		void calculate(std::stack<int> &di_stk, std::stack<char> &oprt);
+		int parse_expression(std::string expr);
    public:
 		 Rpn();
 		 void parse_input(std::string line);
