@@ -23,12 +23,12 @@ void ft_perror(std::string str)
 	exit(1);
 }
 
-void Rpn::calculate(std::stack<int> &di_stk, char oprt)
+void Rpn::calculate(std::stack<int> &di_stk, std::stack<char> &oprt)
 {
 	int fst;
 	int scnd;
 
-	if (di_stk.empty())
+	if (di_stk.empty() || di_stk.size() != 2)
 		ft_perror("Error: bad expression");
 	scnd = di_stk.top();
 	di_stk.pop();
@@ -39,24 +39,24 @@ void Rpn::calculate(std::stack<int> &di_stk, char oprt)
 	}
 	fst = di_stk.top();
 	di_stk.pop();
-	switch (oprt)
+	switch (oprt.top())
 	{
-	case '+':
-		di_stk.push(fst + scnd);
-		break;
-	case '-':
-		di_stk.push(fst - scnd);
-		break;
-	case '*':
-		di_stk.push(fst * scnd);
-		break;
-	case '/':
-		if (scnd == 0)
-			ft_perror("Can't divide by 0");
-		di_stk.push(fst / scnd);
-		break;
-	default:
-		break;
+		case '+':
+			di_stk.push(fst + scnd);
+			break;
+		case '-':
+			di_stk.push(fst - scnd);
+			break;
+		case '*':
+			di_stk.push(fst * scnd);
+			break;
+		case '/':
+			if (scnd == 0)
+				ft_perror("Can't divide by 0");
+			di_stk.push(fst / scnd);
+			break;
+		default:
+			break;
 	}
 }
 
@@ -64,25 +64,20 @@ int Rpn::parse_expression(std::string expr)
 {
 	int digit = 0;
 	std::stack<int> di_stk;
-	std::stack
+	std::stack<char> oprt;
 	for (size_t i = 0; i < expr.size(); i++)
 	{
 		if (std::isdigit(expr[i]))
-		{
-			if (++digit > 2)
-				ft_perror("Error: bad expression");
 			di_stk.push(expr[i] - '0');
-		}
 		else
 		{
-			if (digit == 0 && di_stk.size() != 2)
-				ft_perror("Error: bad expression");
-			digit = 0;
-			calculate(di_stk, expr[i]);
+			oprt.push(expr[i]);
+			calculate(di_stk, oprt);
+			oprt.pop();
 		}
 	}
-		if (digit != 0)
-			ft_perror("Error: bad expression");
+	if (di_stk.size() != 1 || oprt.size() != 0)
+		ft_perror("Error: bad expression");
 	std::cout << "res = " << di_stk.top() << std::endl;
 	return (0);
 }

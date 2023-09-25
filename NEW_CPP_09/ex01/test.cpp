@@ -90,8 +90,16 @@ void parse_input(std::string line)
 	std::cout << expr << std::endl;
 	parse_expression(expr);
 }
-
+#include <iostream>
+#include <sstream>
+#include <string>
 int main()
 {
-	parse_input("24 7 -");
+	std::string a = "8 2 - -6 +";
+	std::istringstream s(a);
+	int n;
+	while (s >> n)
+	{
+		std::cout << n << std::endl;
+	}
 }
