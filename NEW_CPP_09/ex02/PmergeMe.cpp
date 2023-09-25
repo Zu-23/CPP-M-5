@@ -78,16 +78,6 @@ void printVector(std::vector<int> vec)
 }
 
 
-void printList(std::list<int> lst)
-{
-    std::list<int>::iterator it;
-    for (it = lst.begin(); it != lst.end(); it++)
-        std::cout << *it << " ";
-    std::cout << std::endl;
-}
-
-
-
 void PmergeMe::parse_input(char **av, int ac)
 {
 	int val;
@@ -95,7 +85,7 @@ void PmergeMe::parse_input(char **av, int ac)
 	timeval end;
 
     std::vector<int> vec;
-    std::list<int> lst;
+    std::deque<int> dq;
     validNum(av, ac);
     for (int i = 1 ; i < ac; i++)
 	{
@@ -104,7 +94,7 @@ void PmergeMe::parse_input(char **av, int ac)
         if (val < 0)
             ft_perror("Invalid input");
         vec.push_back(val);
-        lst.push_back(val);
+        dq.push_back(val);
     }
     std::vector<int>::iterator it;
     std::cout << "before sort" << std::endl;
@@ -118,71 +108,67 @@ void PmergeMe::parse_input(char **av, int ac)
     printVector(vec);
 	printTime(start, end ,"vector<int>", vec.size());
 
-	//gettimeofday(&start, NULL);
-   	MergeSort_list(lst);
-	//gettimeofday(&end, NULL);
-    // printList(lst);
-    // printTime(start, end, "list<int>", lst.size());
+	gettimeofday(&start, NULL);
+   	MergeSort_dq(0, dq.size() - 1, dq);
+	gettimeofday(&end, NULL);
+    printTime(start, end, "deque<int>", dq.size());
 	
 	
 }
 
-//	--------------------LIST MERGE SORT-------------------
+//	--------------------DEQUE MERGE SORT-------------------
 
-void PmergeMe::merge(std::vector<int>& arr, int left, int mid, int right) {
-    int n1 = mid - left + 1;
-    int n2 = right - mid;
+void merge(int beg, int mid, int end, std::deque<int> &dq)
+{
+	int	n1 = mid - beg + 1;
+	int	n2 = end - mid;
+	int	ri = 0;
+	int	li = 0;
 
-    std::vector<int> leftArr(n1);
-    std::vector<int> rightArr(n2);
-
-    for (int i = 0; i < n1; ++i) {
-        leftArr[i] = arr[left + i];
-    }
-    for (int i = 0; i < n2; ++i) {
-        rightArr[i] = arr[mid + 1 + i];
-    }
-
-    int i = 0, j = 0, k = left;
-
-    while (i < n1 && j < n2) {
-        if (leftArr[i] <= rightArr[j]) {
-            arr[k] = leftArr[i];
-            ++i;
-        } else {
-            arr[k] = rightArr[j];
-            ++j;
-        }
-        ++k;
-    }
-
-    while (i < n1) {
-        arr[k] = leftArr[i];
-        ++i;
-        ++k;
-    }
-
-    while (j < n2) {
-        arr[k] = rightArr[j];
-        ++j;
-        ++k;
-    }
+	std::deque<int> left(dq.begin() + beg, dq.begin() + mid + 1);
+	std::deque<int> right(dq.begin() + mid + 1, dq.begin() + end + 1);
+   
+    for (int i = beg; i <= end; i++)
+	{
+		if (ri == n2)
+		{
+			dq[i] = left[li];
+			li++;
+		}
+		else if (li == n1)
+		{
+			dq[i] = right[ri];
+			ri++;
+		}
+		else if (right[ri] > left[li])
+		{
+			dq[i] = left[li];
+			li++;
+		}
+		else
+		{
+			dq[i] = right[ri];
+			ri++;
+		}
+	}
 }
 
-void PmergeMe::MergeSort_list(std::vector<int>& arr) {
-    int n = arr.size();
-
-    for (int currSize = 1; currSize <= n - 1; currSize *= 2)
-    {
-        for (int leftStart = 0; leftStart < n - 1; leftStart += 2 * currSize) {
-            int mid = std::min(leftStart + currSize - 1, n - 1);
-            int rightEnd = std::min(leftStart + 2 * currSize - 1, n - 1);
-            merge(arr, leftStart, mid, rightEnd);
-        }
-    }
+void MergeSort_dq(int beg, int end, std::deque<int> &dq)
+{
+    int treshold = 5;
+	if (end - beg > treshold)
+	{
+		int	mid = (beg + end) / 2;
+		MergeSort_dq(beg, mid, dq);
+		MergeSort_dq(mid + 1, end, dq);
+		merge(beg, mid, end, dq);
+	}
+	else
+		sort(dq.begin(), dq.end());
 }
 
 //	--------------------VECTOR MERGE SORT-------------------
+
 void PmergeMe::merge(std::vector<int>& arr, int left, int mid, int right)
 {
     int lftsiz = mid - left + 1;

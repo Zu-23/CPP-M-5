@@ -3,9 +3,10 @@
 
 # include <iostream>
 # include <string>
-#include<list>
 #include<vector>
 #include<ctime>
+#include<deque>
+#include<algorithm>
 #include <sys/time.h>
 //BRING BACK THE FLAGSSSS
 class PmergeMe
