@@ -4,8 +4,8 @@ SRC		= main.cpp PmergeMe.cpp
 
 CC 		=	c++
 
-FLAGS	= -std=c++98 -Wall -Wextra -Werror 
-
+FLAGS	= -std=c++98 
+# BRING BACK THE FLAGSSSSSS
 OBJS 	= $(SRC:.cpp=.o)
 
 LIB		= PmergeMe.hpp

@@ -10,6 +10,7 @@ PmergeMe::PmergeMe()
 
 PmergeMe::PmergeMe( const PmergeMe & src )
 {
+    *this = src;
 }
 
 
@@ -32,6 +33,7 @@ PmergeMe &				PmergeMe::operator=( PmergeMe const & rhs )
 	//{
 		//this->_value = rhs.getValue();
 	//}
+    (void)rhs;
 	return *this;
 }
 
@@ -40,15 +42,15 @@ PmergeMe &				PmergeMe::operator=( PmergeMe const & rhs )
 /*
 ** --------------------------------- METHODS ----------------------------------
 */
-void PmergeMe::ft_perror(std::string str)
+void ft_perror(std::string str)
 {
 	std::cout << str << std::endl;
 	exit(1);
 }
 
-int PmergeMe::validNum(char **av, int ac)
+void PmergeMe::validNum(char **av, int ac)
 {
-	for (size_t i = 1 ; i < ac; i++)
+	for (int i = 1 ; i < ac; i++)
 	{
 		std::string str = av[i];
 		for (size_t j = 0; j < str.size(); j++)
@@ -60,97 +62,126 @@ int PmergeMe::validNum(char **av, int ac)
 	}
 }
 
+void printTime(timeval start, timeval end, std::string std, size_t range)
+{
+    std::cout << "Time to process a range of " << range
+    << " elements with std::" << std << " : "  
+    << (end.tv_sec * 1e6 + end.tv_usec) - (start.tv_sec * 1e6 + start.tv_usec)
+    << "us";
+}
+void printVector(std::vector<int> vec)
+{
+    std::vector<int>::iterator it;
+    for (it = vec.begin(); it != vec.end(); it++)
+        std::cout << *it << " ";
+    std::cout << std::endl;
+}
+
+
+void printList(std::list<int> lst)
+{
+    std::list<int>::iterator it;
+    for (it = lst.begin(); it != lst.end(); it++)
+        std::cout << *it << " ";
+    std::cout << std::endl;
+}
+
+
+
 void PmergeMe::parse_input(char **av, int ac)
 {
 	int val;
 	timeval start;
 	timeval end;
 
-    std::vector<int> vec;// private
-    std::list<int> lst;//this->lst
-    for (size_t i = 1 ; i < ac; i++)
+    std::vector<int> vec;
+    std::list<int> lst;
+    validNum(av, ac);
+    for (int i = 1 ; i < ac; i++)
 	{
 		std::string str = av[i];
         val = std::atoi(str.c_str());
         if (val < 0)
-            std::cout << "Invalid arguemnt\n";
+            ft_perror("Invalid input");
         vec.push_back(val);
         lst.push_back(val);
     }
     std::vector<int>::iterator it;
     std::cout << "before sort" << std::endl;
     for (it = vec.begin(); it != vec.end(); it++)
-    {
         std::cout << *it << " ";
-    }
-    std::cout << "after sort" << std::endl;
-	start = time();
+    std::cout << std::endl << "after sort" << std::endl;
+
+	gettimeofday(&start, NULL);
    	MergeSort_vector(vec, 0, vec.size() - 1);
-	end = time();
-	printTime(start, end, msg);
-	start = time();
+	gettimeofday(&end, NULL);
+    printVector(vec);
+	printTime(start, end ,"vector<int>", vec.size());
+
+	//gettimeofday(&start, NULL);
    	MergeSort_list(lst);
-	end = time();
+	//gettimeofday(&end, NULL);
+    // printList(lst);
+    // printTime(start, end, "list<int>", lst.size());
 	
 	
 }
 
 //	--------------------LIST MERGE SORT-------------------
 
-void PmergeMe::merge(std::list<int>& arr, std::list<int>& leftArr, std::list<int>& rightArr)
-{
-    std::list<int>::iterator leftIt = leftArr.begin();
-    std::list<int>::iterator rightIt = rightArr.begin();
+void PmergeMe::merge(std::vector<int>& arr, int left, int mid, int right) {
+    int n1 = mid - left + 1;
+    int n2 = right - mid;
 
-    while (leftIt != leftArr.end() && rightIt != rightArr.end())
-    {
-        if (*leftIt <= *rightIt)
-		{
-            arr.push_back(*leftIt);
-            ++leftIt;
-        }
-		else 
-		{
-            arr.push_back(*rightIt);
-            ++rightIt;
-        }
+    std::vector<int> leftArr(n1);
+    std::vector<int> rightArr(n2);
+
+    for (int i = 0; i < n1; ++i) {
+        leftArr[i] = arr[left + i];
+    }
+    for (int i = 0; i < n2; ++i) {
+        rightArr[i] = arr[mid + 1 + i];
     }
 
-    while (leftIt != leftArr.end())
-    {
-        arr.push_back(*leftIt);
-        ++leftIt;
+    int i = 0, j = 0, k = left;
+
+    while (i < n1 && j < n2) {
+        if (leftArr[i] <= rightArr[j]) {
+            arr[k] = leftArr[i];
+            ++i;
+        } else {
+            arr[k] = rightArr[j];
+            ++j;
+        }
+        ++k;
     }
 
-    while (rightIt != rightArr.end())
-    {
-        arr.push_back(*rightIt);
-        ++rightIt;
+    while (i < n1) {
+        arr[k] = leftArr[i];
+        ++i;
+        ++k;
+    }
+
+    while (j < n2) {
+        arr[k] = rightArr[j];
+        ++j;
+        ++k;
     }
 }
 
-void PmergeMe::MergeSort_list(std::list<int>& arr)
-{
-    std::list<int> leftArr;
-    std::list<int> rightArr;
+void PmergeMe::MergeSort_list(std::vector<int>& arr) {
+    int n = arr.size();
 
-    int mid = arr.size() / 2;
-    std::list<int>::iterator it = arr.begin();
-    for (int i = 0; i < mid; ++i)
+    for (int currSize = 1; currSize <= n - 1; currSize *= 2)
     {
-        leftArr.push_back(*it);
-        ++it;
+        for (int leftStart = 0; leftStart < n - 1; leftStart += 2 * currSize) {
+            int mid = std::min(leftStart + currSize - 1, n - 1);
+            int rightEnd = std::min(leftStart + 2 * currSize - 1, n - 1);
+            merge(arr, leftStart, mid, rightEnd);
+        }
     }
-    while (it != arr.end())
-    {
-        rightArr.push_back(*it);
-        ++it;
-    }
-    MergeSort_list(leftArr);
-    MergeSort_list(rightArr);
-    arr.clear();
-    merge(arr, leftArr, rightArr);
 }
+
 //	--------------------VECTOR MERGE SORT-------------------
 void PmergeMe::merge(std::vector<int>& arr, int left, int mid, int right)
 {

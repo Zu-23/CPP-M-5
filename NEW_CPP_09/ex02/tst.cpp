@@ -1,83 +1,32 @@
 #include<iostream>
-#include<string>
+#include<ctime>
+#include<unistd.h>
+#include<cstdlib>
+#include<sys/time.h>
 #include<vector>
 #include<list>
 
+#include <iostream>
+#include <vector>
 
+void merge(std::vector<int>& arr, int left, int mid, int right) {
+    int n1 = mid - left + 1;
+    int n2 = right - mid;
 
-void merge(std::list<int>& arr, std::list<int>& leftArr, std::list<int>& rightArr)
-{
-    std::list<int>::iterator leftIt = leftArr.begin();
-    std::list<int>::iterator rightIt = rightArr.begin();
+    std::vector<int> leftArr(n1);
+    std::vector<int> rightArr(n2);
 
-    while (leftIt != leftArr.end() && rightIt != rightArr.end())
-    {
-        if (*leftIt <= *rightIt) {
-            arr.push_back(*leftIt);
-            ++leftIt;
-        } else {
-            arr.push_back(*rightIt);
-            ++rightIt;
-        }
-    }
-
-    while (leftIt != leftArr.end())
-    {
-        arr.push_back(*leftIt);
-        ++leftIt;
-    }
-
-    while (rightIt != rightArr.end())
-    {
-        arr.push_back(*rightIt);
-        ++rightIt;
-    }
-}
-
-
-void MergeSort_list(std::list<int>& arr)
-{
-    std::list<int> leftArr;
-    std::list<int> rightArr;
-
-    int mid = arr.size() / 2;
-    std::list<int>::iterator it = arr.begin();
-    for (int i = 0; i < mid; ++i)
-    {
-        leftArr.push_back(*it);
-        ++it;
-    }
-    while (it != arr.end())
-    {
-        rightArr.push_back(*it);
-        ++it;
-    }
-    MergeSort_list(leftArr);
-    MergeSort_list(rightArr);
-    arr.clear();
-    merge(arr, leftArr, rightArr);
-}
-
-void merge(std::vector<int>& arr, int left, int mid, int right)
-{
-    int lftsiz = mid - left + 1;
-    int ritsiz = right - mid;
-    std::vector<int> leftArr(lftsiz);
-    std::vector<int> rightArr(ritsiz);
-
-    for (int i = 0; i < lftsiz; ++i)
-    {
+    for (int i = 0; i < n1; ++i) {
         leftArr[i] = arr[left + i];
     }
-    for (int i = 0; i < ritsiz; ++i)
-    {
+    for (int i = 0; i < n2; ++i) {
         rightArr[i] = arr[mid + 1 + i];
     }
+
     int i = 0, j = 0, k = left;
-    while (i < lftsiz && j < ritsiz)
-    {
-        if (leftArr[i] <= rightArr[j])
-        {
+
+    while (i < n1 && j < n2) {
+        if (leftArr[i] <= rightArr[j]) {
             arr[k] = leftArr[i];
             ++i;
         } else {
@@ -86,88 +35,48 @@ void merge(std::vector<int>& arr, int left, int mid, int right)
         }
         ++k;
     }
-    while (i < lftsiz)
-    {
+
+    while (i < n1) {
         arr[k] = leftArr[i];
         ++i;
         ++k;
     }
-    while (j < ritsiz) {
+
+    while (j < n2) {
         arr[k] = rightArr[j];
         ++j;
         ++k;
     }
 }
 
-//3 5 1 7
+void MergeSort_list(std::vector<int>& arr) {
+    int n = arr.size();
 
-void MergeSort_vector(std::vector<int>& arr, int left, int right) // 0 6
-{
-    //1- left = 0. right = 3. mid = 1
-    //2- left = 0. right = 1. mid = 0 >> 2.1 left = 1. right = 1 << return (2)
-    //2->merge: left = 0, mid = 0, right = 1
-    if (left < right)
+    for (int currSize = 1; currSize <= n - 1; currSize *= 2)
     {
-        int mid = left + (right - left) / 2;
-        MergeSort_vector(arr, left, mid);
-        MergeSort_vector(arr, mid + 1, right);
-        merge(arr, left, mid, right);
+        for (int leftStart = 0; leftStart < n - 1; leftStart += 2 * currSize) {
+            int mid = std::min(leftStart + currSize - 1, n - 1);
+            int rightEnd = std::min(leftStart + 2 * currSize - 1, n - 1);
+            merge(arr, leftStart, mid, rightEnd);
+        }
     }
 }
 
-void validNum(char **av, int ac)
-{
-	for (size_t i = 1 ; i < ac; i++)
-	{
-		std::string str = av[i];
-        if (str.empty())
-            continue;
-		for (size_t j = 0; j < str.size(); j++)
-		{
-			if (!std::isspace(str[j]) && !std::isdigit(str[j]))
-            {
-				std::cout << "Invalid input\n";
-                exit(1);
-            }
-		}
-
-	}
-}
-
-void parse_input (char **av, int ac)
-{
-    int val;
-    std::vector<int> vec;
-    std::list<int> lst;
-    for (size_t i = 1 ; i < ac; i++)
-	{
-		std::string str = av[i];
-        val = std::atoi(str.c_str());
-        if (val < 0)
-            std::cout << "Invalid arguemnt\n";
-        vec.push_back(val);
-        lst.push_back(val);
-    }
-    std::vector<int>::iterator it;
-    std::cout << "before sort" << std::endl;
-    for (it = vec.begin(); it != vec.end(); it++)
+int main() {
+    std::vector<int> arr;
+    srand((unsigned) time(NULL));
+    for (size_t i = 0; i < 15; i++)
     {
+        int random = rand();
+        arr.push_back(random);
+    }
+    mergeSort(arr);
+
+    std::cout << "Sorted array: ";
+ std::vector<int>::iterator it;
+    for (it = arr.begin(); it != arr.end(); it++)
         std::cout << *it << " ";
-    }
-    std::cout << "after sort" << std::endl;
-   MergeSort_vector(vec, 0, vec.size() - 1);
-    for (it = vec.begin(); it != vec.end(); it++)
-    {
-        std::cout << *it << " ";
-    }
-   // MergeSort_list(lst)
-}
+    std::cout << std::endl;
 
-int main(int ac, char **av)
-{
-    int val;
-
-    validNum(av, ac);
-    parse_input(av, ac);
-    
+    return 0;
 }

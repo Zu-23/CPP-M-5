@@ -1,18 +1,12 @@
 #include "PmergeMe.hpp"
 
-
+//BRING BACK THE FLAGS
 int main(int ac, char **av)
 {
     try
     {
-        if (ac != 2)
-            ft_perror("Invalid argument");
-        else
-        {
-            PmergeMe mrg;
-            mrg.parse_input(av);
-        }
-
+        PmergeMe mrg;
+        mrg.parse_input(av, ac);
     }
     catch (std::exception &e)
     {
