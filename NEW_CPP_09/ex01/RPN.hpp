@@ -6,7 +6,7 @@
 /*   By: zhaddoum <zhaddoum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 23:51:26 by zhaddoum          #+#    #+#             */
-/*   Updated: 2023/09/25 23:51:27 by zhaddoum         ###   ########.fr       */
+/*   Updated: 2023/09/26 10:06:44 by zhaddoum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include<iostream>
 #include<string>
 #include<stack>
+#include<cstdlib>
 
 class Rpn
 {

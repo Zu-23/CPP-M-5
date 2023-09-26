@@ -6,7 +6,7 @@
 /*   By: zhaddoum <zhaddoum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 23:51:22 by zhaddoum          #+#    #+#             */
-/*   Updated: 2023/09/25 23:51:23 by zhaddoum         ###   ########.fr       */
+/*   Updated: 2023/09/26 11:22:47 by zhaddoum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,11 @@ void Rpn::parse_input(std::string line)
 		else if (std::isdigit(line[i]) || var  != std::string::npos)
 			expr += line[i];
    }
-   if (expr.size() < 2)
-		ft_perror("Please put a valid expression");
+   if (expr.size() == 1)
+   {
+		std::cout << expr << std::endl;
+		exit(1);
+   }
+		
 	parse_expression(expr);
 }

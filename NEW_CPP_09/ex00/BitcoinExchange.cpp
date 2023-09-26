@@ -6,7 +6,7 @@
 /*   By: zhaddoum <zhaddoum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 23:51:33 by zhaddoum          #+#    #+#             */
-/*   Updated: 2023/09/25 23:51:34 by zhaddoum         ###   ########.fr       */
+/*   Updated: 2023/09/26 11:35:25 by zhaddoum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,6 @@ int Bitcoin::parse_date(std::string subline, int unsc, std::string line)
 	flag = 0;
 	if (unsc == 0)
 	{
-		// if (subline.size() < 4)
-		// 	flag = 1;
 	   for (size_t i = 0; i < subline.size(); i++)
 			if (!std::isdigit(subline[i]))
 				flag = 1;
@@ -184,7 +182,7 @@ std::string Bitcoin::get_date(std::string &line)
 
 int Bitcoin::check_month_day(std::string date)
 {
-     int monthDays[] = {0,31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+    int monthDays[] = {0,31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 	size_t pos = date.find('-') + 1;
 	std::string stYear = date.substr(0, pos - 1);
     std::string stMonth = date.substr(pos, 2);

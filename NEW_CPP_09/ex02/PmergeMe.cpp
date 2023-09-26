@@ -6,7 +6,7 @@
 /*   By: zhaddoum <zhaddoum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 23:51:09 by zhaddoum          #+#    #+#             */
-/*   Updated: 2023/09/25 23:51:10 by zhaddoum         ###   ########.fr       */
+/*   Updated: 2023/09/26 11:03:16 by zhaddoum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,15 +58,26 @@ void ft_perror(std::string str)
 
 void PmergeMe::validNum(char **av, int ac)
 {
+    int digit = 0;
 	for (int i = 1 ; i < ac; i++)
 	{
 		std::string str = av[i];
+        for (size_t j = 0; j < str.size(); j++)
+        {
+            if (std::isdigit(str[j]))
+            {
+                digit = 1;
+                break ;
+            }
+        }
+        if (digit == 0)
+            ft_perror("Invalid input");
 		for (size_t j = 0; j < str.size(); j++)
 		{
 			if (!std::isspace(str[j]) && !std::isdigit(str[j]))
 				ft_perror("Invalid input");
 		}
-
+        digit = 0;
 	}
 }
 
@@ -128,7 +139,7 @@ void PmergeMe::parse_input(char **av, int ac)
     printTime(start, end, "deque<int>", dq.size());
     printDeque(dq);
 }
-
+//
 //	--------------------DEQUE MERGE SORT-------------------
 
 void PmergeMe::merge(int beg, int mid, int end, std::deque<int> &dq)
