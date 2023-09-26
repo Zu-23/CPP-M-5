@@ -6,7 +6,7 @@
 /*   By: zhaddoum <zhaddoum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 23:51:38 by zhaddoum          #+#    #+#             */
-/*   Updated: 2023/09/25 23:51:39 by zhaddoum         ###   ########.fr       */
+/*   Updated: 2023/09/26 12:08:53 by zhaddoum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 #include <iostream>
 #include <fstream>
+#include<cstdlib>
 #include<map>
 
 class Bitcoin

@@ -6,7 +6,7 @@
 /*   By: zhaddoum <zhaddoum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 23:51:33 by zhaddoum          #+#    #+#             */
-/*   Updated: 2023/09/26 11:35:25 by zhaddoum         ###   ########.fr       */
+/*   Updated: 2023/09/26 15:26:29 by zhaddoum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,19 +88,17 @@ int Bitcoin::parse_date(std::string subline, int unsc, std::string line)
 	}
 	else
 	{
-		if (subline.size() != 2)
-			flag = 1;
 	   try
 	   {
 			int date = std::atoi(subline.c_str());
 			if (unsc == 1)
 			{
-				if (date < 0 || date > 12)
+				if (date <= 0 || date > 12)
 					flag = 1;
 			}
 			else if (unsc == 2)
 			{
-				if (date < 0 || date > 31)
+				if (date <= 0 || date > 31)
 					flag = 1;
 			}
 			for (size_t i = 0; i < subline.size(); i++)
@@ -125,21 +123,24 @@ double Bitcoin::parse_value(std::string line)
 	int flag = 0;
 	double val;
 
-	for (size_t i = 0; i < line.size(); i++)
-	{
-		if ((!std::isdigit(line[i]) && line[i] != '.' )|| line.empty())
-		{
-			flag = 1;
-			break ;
-		}
-	}
 	try
 	{
-		val = std::strtod(line.c_str(), NULL);
-		if (val < 0)
-			flag = 2;
-		else if (val > 1000)
-			flag = 3;
+		for (size_t i = 0; i < line.size(); i++)
+		{
+			if ((!std::isdigit(line[i]) && line[i] != '.' ) || line.empty())
+			{
+				flag = 1;
+				break ;
+			}
+		}
+		if (flag == 0)
+		{
+			val = std::strtod(line.c_str(), NULL);
+			if (val < 0)
+				flag = 2;
+			else if (val > 1000)
+				flag = 3;
+		}
 	}
 	catch(const std::exception& e)
 	{
@@ -147,8 +148,10 @@ double Bitcoin::parse_value(std::string line)
 	}
 	if (flag)
 	{
-		if (flag == 1 || flag == 3)
+		if (flag == 3)
 			std::cout << "Error: too large a number" << std::endl;
+		else if (flag == 1)
+			std::cout << "Error: invalid number" << std::endl;
 		else if (flag == 2)
 			std::cout << "Error: not a positive number" << std::endl;
 		return (-1);
@@ -182,14 +185,19 @@ std::string Bitcoin::get_date(std::string &line)
 
 int Bitcoin::check_month_day(std::string date)
 {
-    int monthDays[] = {0,31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+	int monthDays[] = {0,31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 	size_t pos = date.find('-') + 1;
-	std::string stYear = date.substr(0, pos - 1);
-    std::string stMonth = date.substr(pos, 2);
-    std::string stDay = date.substr(pos + 3, 2);
-    int month = std::atoi(stMonth.c_str());
-    int day = std::atoi(stDay.c_str());
-	int year = std::atoi(stYear.c_str());
+	int prpos = 0;
+	std::string ar[3];
+	for(int i = 0; i < 3; i++)
+	{
+		pos = date.find('-', prpos);
+		ar[i] = date.substr(prpos, pos - prpos);
+		prpos = pos + 1;
+	}
+	int year = std::atoi(ar[0].c_str());
+    int month = std::atoi(ar[1].c_str());
+    int day = std::atoi(ar[2].c_str());
 	if (month == 2 && (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0)))
         monthDays[month] = 29;
 
@@ -271,6 +279,11 @@ void    Bitcoin::parse_file(char *file_name)
 	file.open(file_name);
 	if (file.fail())
 		throw(std::runtime_error("Error: could not open file"));
+	else if (file.peek() == std::ifstream::traits_type::eof())
+	{
+		file.close();
+		throw(std::runtime_error("Error: empty file"));
+	}
 	while (std::getline(file, row))
 	{
 		if (row.empty())

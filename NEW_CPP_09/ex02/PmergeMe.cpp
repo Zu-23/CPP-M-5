@@ -6,7 +6,7 @@
 /*   By: zhaddoum <zhaddoum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 23:51:09 by zhaddoum          #+#    #+#             */
-/*   Updated: 2023/09/26 11:03:16 by zhaddoum         ###   ########.fr       */
+/*   Updated: 2023/09/26 15:00:52 by zhaddoum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,26 +58,14 @@ void ft_perror(std::string str)
 
 void PmergeMe::validNum(char **av, int ac)
 {
-    int digit = 0;
 	for (int i = 1 ; i < ac; i++)
 	{
 		std::string str = av[i];
-        for (size_t j = 0; j < str.size(); j++)
-        {
-            if (std::isdigit(str[j]))
-            {
-                digit = 1;
-                break ;
-            }
-        }
-        if (digit == 0)
-            ft_perror("Invalid input");
 		for (size_t j = 0; j < str.size(); j++)
 		{
 			if (!std::isspace(str[j]) && !std::isdigit(str[j]))
 				ft_perror("Invalid input");
 		}
-        digit = 0;
 	}
 }
 
@@ -114,12 +102,23 @@ void PmergeMe::parse_input(char **av, int ac)
     validNum(av, ac);
     for (int i = 1 ; i < ac; i++)
 	{
+        int digit = 0;
 		std::string str = av[i];
-        val = std::atoi(str.c_str());
-        if (val < 0)
-            ft_perror("Invalid input");
-        vec.push_back(val);
-        dq.push_back(val);
+        for (size_t i = 0; i < str.size(); i++)
+        {
+            if (std::isdigit(str[i]))
+                digit = 1;
+        }
+        if (digit == 0)
+            continue;
+        std::istringstream s(str);
+        while (s >> val)
+        {
+            if (val < 0)
+                ft_perror("Invalid input");
+            vec.push_back(val);
+            dq.push_back(val);
+        } 
     }
     std::vector<int>::iterator it;
     std::cout << "before sort" << std::endl;

@@ -6,19 +6,21 @@
 /*   By: zhaddoum <zhaddoum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 23:51:12 by zhaddoum          #+#    #+#             */
-/*   Updated: 2023/09/26 10:00:47 by zhaddoum         ###   ########.fr       */
+/*   Updated: 2023/09/26 14:58:06 by zhaddoum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PMERGEME_HPP
 # define PMERGEME_HPP
 
-# include <iostream>
-# include <string>
-#include<vector>
-#include<ctime>
-#include<deque>
-#include<algorithm>
+#include <iostream>
+#include <string>
+#include <sstream>
+#include <istream>
+#include <vector>
+#include <ctime>
+#include <deque>
+#include <algorithm>
 #include <sys/time.h>
 
 
