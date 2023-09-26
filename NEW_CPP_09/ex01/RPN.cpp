@@ -6,7 +6,7 @@
 /*   By: zhaddoum <zhaddoum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 23:51:22 by zhaddoum          #+#    #+#             */
-/*   Updated: 2023/09/26 11:22:47 by zhaddoum         ###   ########.fr       */
+/*   Updated: 2023/09/26 17:32:35 by zhaddoum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,9 +103,11 @@ void Rpn::parse_input(std::string line)
    for(size_t i = 0; i < line.size(); i++)
    {
 		var = op.find(line[i]);
+		if (var != std::string::npos && line[i + 1] != '\0' && line[i + 1] != ' ')
+			ft_perror("Error: bad expression");
 		if (!std::isspace(line[i]) && !std::isdigit(line[i]) && var  == std::string::npos)
 			ft_perror("Error: bad expression");
-		else if (std::isdigit(line[i]) && line[i + 1] != '\0' && std::isdigit(line[i + 1]))
+		else if (std::isdigit(line[i]) && line[i + 1] != '\0' && line[i + 1] != ' ')
 			ft_perror("Error: bad expression");
 		else if (var != std::string::npos && line[i + 1] != '\0' && std::isdigit(line[i + 1]))
 			ft_perror("Error: bad expression");

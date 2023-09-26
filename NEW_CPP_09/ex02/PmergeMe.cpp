@@ -6,7 +6,7 @@
 /*   By: zhaddoum <zhaddoum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 23:51:09 by zhaddoum          #+#    #+#             */
-/*   Updated: 2023/09/26 15:00:52 by zhaddoum         ###   ########.fr       */
+/*   Updated: 2023/09/26 17:26:09 by zhaddoum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,22 @@ void PmergeMe::validNum(char **av, int ac)
 				ft_perror("Invalid input");
 		}
 	}
+    int i;
+    for (i = 1 ; i < ac; i++)
+	{
+		std::string str = av[i];
+        for (size_t i = 0; i < str.size(); i++)
+        {
+            if (isspace(str[i]))
+                continue;
+            else if (std::isdigit(str[i]))
+                return;
+        }
+        if (str.empty())
+            continue;
+	}
+    if (i == ac)
+        ft_perror("Er Invalid input");
 }
 
 void printTime(timeval start, timeval end, std::string std, size_t range)
@@ -91,9 +107,11 @@ void printDeque(std::deque<int> dq)
         std::cout << *it << " ";
     std::cout << std::endl;
 }
+
 void PmergeMe::parse_input(char **av, int ac)
 {
 	int val;
+    long long cur;
 	timeval start;
 	timeval end;
 
@@ -112,10 +130,11 @@ void PmergeMe::parse_input(char **av, int ac)
         if (digit == 0)
             continue;
         std::istringstream s(str);
-        while (s >> val)
+        while (s >> cur)
         {
-            if (val < 0)
+            if (cur < 0 || cur >= std::numeric_limits<int>::max())
                 ft_perror("Invalid input");
+            val = cur;
             vec.push_back(val);
             dq.push_back(val);
         } 
